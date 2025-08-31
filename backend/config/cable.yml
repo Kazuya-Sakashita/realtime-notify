@@ -1,9 +1,15 @@
-# Async adapter only works within the same process, so for manually triggering cable updates from a console,
-# and seeing results in the browser, you must do so from the web console (running inside the dev process),
-# not a terminal started via bin/rails console! Add "console" to any action or any ERB template view
-# to make the web console appear.
+# config/cable.yml
+
+# NOTE: 開発でも DB バックで動かす設定に変更
 development:
-  adapter: async
+  adapter: solid_cable
+  # 単一DB(A構成)なら connects_to は不要（primary を使います）
+  # 別DBに分離したい場合は下記を有効化し、database.yml に development:cable を用意してください。
+  # connects_to:
+  #   database:
+  #     writing: cable
+  polling_interval: 0.1.seconds
+  message_retention: 1.day
 
 test:
   adapter: test
