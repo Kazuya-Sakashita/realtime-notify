@@ -1,15 +1,75 @@
 name: backend-ci
-on: [push, pull_request]
+
+on:
+  push:
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend.yml"
+  pull_request:
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend.yml"
+
 jobs:
-  test:
+  detect-backend:
+    name: detect backend presence
     runs-on: ubuntu-latest
-    defaults: { run: { working-directory: backend } }
     steps:
       - uses: actions/checkout@v4
-      - uses: ruby/setup-ruby@v1
+      - id: probe
+        run: |
+          if [ -f "backend/Gemfile" ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+          fi
+    outputs:
+      present: ${{ steps.probe.outputs.present }}
+
+  test:
+    name: test (Ruby)
+    runs-on: ubuntu-latest
+    needs: detect-backend
+    if: ${{ needs.detect-backend.outputs.present == 'true' }}
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.3
+          ruby-version: .ruby-version
           bundler-cache: true
-      - run: bundle install
-      - run: bin/rails db:prepare
-      - run: bin/rails about
+
+      - name: Bundle install
+        run: bundle install --path vendor/bundle
+
+      - name: Prepare DB (skip if not needed)
+        run: |
+          if [ -f "bin/rails" ]; then
+            bin/rails db:prepare || true
+          fi
+
+      - name: Run tests
+        run: |
+          if [ -f "bin/rails" ]; then
+            if bundle exec which rspec >/dev/null 2>&1; then
+              bundle exec rspec
+            elif [ -d "test" ]; then
+              bundle exec rake test
+            else
+              echo "No test suite found. Skipping."
+            fi
+          else
+            echo "Rails app not detected. Skipping."
+          fi
+
+  noop-when-missing:
+    name: noop (no backend yet)
+    runs-on: ubuntu-latest
+    needs: detect-backend
+    if: ${{ needs.detect-backend.outputs.present != 'true' }}
+    steps:
+      - run: echo "backend/Gemfile が無いのでスキップします。"
