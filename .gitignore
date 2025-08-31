@@ -1,65 +1,19 @@
-# --- Global ---
+# 共通
 .DS_Store
-Thumbs.db
-*.log
-*.swp
-*~
 .env
-.env.*
-.tmp/
-tmp/
-coverage/
-dist/
-node_modules/
-*.local
-
-# --- Git / IDE ---
-.vscode/
-.idea/
-*.iml
-
-# --- Ruby / Rails (monorepo) ---
-/backend/.bundle/
+.env.*.local
+node_modules
+# Rails
 /backend/log/*
 !/backend/log/.keep
 /backend/tmp/*
 !/backend/tmp/.keep
-/backend/tmp/pids/*
-!/backend/tmp/pids/.keep
-/backend/tmp/cache/
-/backend/tmp/sockets/
 /backend/storage/*
 !/backend/storage/.keep
-/backend/vendor/bundle/
-/backend/public/assets/
-/backend/.byebug_history
-/backend/.rspec_status
-/backend/db/*.sqlite3
-/backend/db/*.sqlite3-journal
-/backend/db/*.sqlite3-*
-/backend/db/schema.rb
-/backend/db/structure.sql
+/backend/.bundle
 /backend/config/master.key
-/backend/config/credentials.yml.enc
-
-# --- Node / Frontend (monorepo) ---
-/frontend/node_modules/
-/frontend/.next/
-/frontend/out/
-/frontend/.turbo/
-/frontend/.cache/
-/frontend/.swc
+/backend/vendor/bundle
+# Frontend
+/frontend/.next
 /frontend/.vercel
-
-# --- Docker / Compose（必要なら） ---
-docker-data/
-**/docker/*.pid
-**/docker/*.sock
-
-# --- Test Artifacts ---
-/frontend/coverage/
-/backend/coverage/
-
-# --- OS / Misc ---
-*.orig
-*.rej
+/frontend/out

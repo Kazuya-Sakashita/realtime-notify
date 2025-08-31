@@ -7,7 +7,4 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
-
-  # 他のAPIルートは省略
-  mount ActionCable.server => "/cable"
 end
