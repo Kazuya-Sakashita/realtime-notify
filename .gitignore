@@ -1,0 +1,19 @@
+# 共通
+.DS_Store
+.env
+.env.*.local
+node_modules
+# Rails
+/backend/log/*
+!/backend/log/.keep
+/backend/tmp/*
+!/backend/tmp/.keep
+/backend/storage/*
+!/backend/storage/.keep
+/backend/.bundle
+/backend/config/master.key
+/backend/vendor/bundle
+# Frontend
+/frontend/.next
+/frontend/.vercel
+/frontend/out
