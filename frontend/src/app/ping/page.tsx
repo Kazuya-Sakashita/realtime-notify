@@ -9,7 +9,7 @@ export default function PingPage() {
     <main className="mx-auto max-w-xl p-6 space-y-4">
       <h1 className="text-2xl font-bold">Ping Listener</h1>
       <p className="text-sm text-muted-foreground">
-        Rails の <code>ActionCable.server.broadcast("ping", &#123; ... &#125;)</code> を受信してログ出力します。
+        Rails の <code>ActionCable.server.broadcast(&quot;ping&quot;, &#123; ... &#125;)</code> を受信してログ出力します。
       </p>
 
       <div className="rounded-xl border p-4">
