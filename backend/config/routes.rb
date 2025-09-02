@@ -10,4 +10,9 @@ Rails.application.routes.draw do
 
   # 他のAPIルートは省略
   mount ActionCable.server => "/cable"
+
+  namespace :api do
+    resources :notifications, only: :create
+  post "notifications/debug", to: "notifications_debug#create"
+  end
 end
