@@ -6,12 +6,17 @@ import * as ActionCable from '@rails/actioncable'
  */
 let consumer: ActionCable.Cable | null = null
 
-export function getConsumer() {
+export function getConsumer(userId: number | string = 1) {
   if (consumer) return consumer
-  const url = process.env.NEXT_PUBLIC_WS_URL
-  if (!url) {
+
+  const baseUrl = process.env.NEXT_PUBLIC_WS_URL
+  if (!baseUrl) {
     throw new Error('NEXT_PUBLIC_WS_URL is not set')
   }
+
+  // 開発用: URL に ?user_id=xx を付加
+  const url = `${baseUrl}?user_id=${encodeURIComponent(userId)}`
+
   consumer = ActionCable.createConsumer(url)
   return consumer
 }
